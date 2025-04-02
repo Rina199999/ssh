@@ -1,0 +1,31 @@
+import time
+
+# Входные параметры
+metric_name = "Температура"
+unit = "°C"
+min_value, max_value = 18, 25  # Интервал генерации значений
+filename = "metrics.csv"
+
+# Создание заголовка CSV-файла
+with open(filename, "w", encoding="utf-8") as file:
+    file.write("Дата и время,Метрика,Значение,Единица измерения\n")
+
+while True:
+    values = []
+    start_time = time.time()
+    
+    # Сбор значений в течение минуты
+    while time.time() - start_time < 60:
+        value = min_value + (max_value - min_value) * (time.time() % 1)  # Простая генерация значений
+        values.append(value)
+        time.sleep(1)
+    
+    # Усреднение значений
+    avg_value = sum(values) / len(values)
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    
+    # Запись в CSV
+    with open(filename, "a", encoding="utf-8") as file:
+        file.write(f"{timestamp},{metric_name},{avg_value:.2f},{unit}\n")
+    
+    print(f"Сохранено: {timestamp}, {metric_name}: {avg_value:.2f} {unit}")

@@ -1,0 +1,22 @@
+result_json = [{
+    "target": "region1.host1.metric_name1",
+    "datapoints": [[123.2323232, 1634083200]],  # value, timestamp
+}]
+
+# Извлечение данных
+entry = result_json[0]
+target_parts = entry["target"].split(".")
+_, host, request_type = target_parts  # Разделение на части
+
+timestamp = entry["datapoints"][0][1]
+value = round(entry["datapoints"][0][0], 3)  # Округление до 3 знаков
+
+# Формирование словаря
+result_data = {
+    "timestamp": [timestamp],
+    "host": [host],
+    "request_type": [request_type],
+    "value": [str(value)]
+}
+
+print(result_data)
